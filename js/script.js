@@ -89,4 +89,36 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     setClock('.timer', deadline);
-}); 
+
+    // Модальное окно 
+
+    const modalTrigger = document.querySelectorAll('[data-modal]'),
+          modal = document.querySelector('.modal'),
+          modalCloseBtn = document.querySelector('[data-close]');
+
+    function modalToggle() {
+        modal.classList.toggle('show');
+        clearInterval(modalTimerId);
+    }
+    modalTrigger.forEach((item) => {
+        item.addEventListener('click', () => {
+            modalToggle()
+        });
+    });
+    modalCloseBtn.addEventListener('click', () => {
+        modalToggle()
+    });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal){
+            modalToggle()
+        }
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Escape' && modal.classList.contains('show')) {
+            modalToggle()
+        }
+    });
+
+    const modalTimerId = setTimeout(modalToggle, 3000);
+
+});     
