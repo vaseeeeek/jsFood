@@ -121,4 +121,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const modalTimerId = setTimeout(modalToggle, 3000);
 
+    function show
+
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight){ //если положение по высоте + высота блока >= высоте всего документа то 
+            modalToggle();
+        }
+    });
 });     
