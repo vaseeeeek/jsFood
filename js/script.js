@@ -94,8 +94,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
     setClock('.timer', deadline);
 
-    // Modal
-
     const modalTrigger = document.querySelectorAll('[data-modal]'),
         modal = document.querySelector('.modal'),
         modalCloseBtn = document.querySelector('[data-close]');
@@ -131,8 +129,8 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // const modalTimerId = setTimeout(openModal, 3000);
-    // Закомментировал, чтобы не отвлекало
+    const modalTimerId = setTimeout(openModal, 300);
+    // Изменил значение, чтобы не отвлекало
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
@@ -213,6 +211,45 @@ window.addEventListener('DOMContentLoaded', function() {
         ".menu .container",
         'menu__item'
     ).render();
-
     
+    //forms
+    const forms = document.querySelectorAll('form');
+
+    const message = {
+        loading: 'Загрузка',
+        success: 'Спасибо, скоромы с вами свяжемся',
+        failure: 'Что-то пошло не так'
+    };
+
+    forms.forEach(item => {
+        postData(item);
+    });
+
+    function postData(form) {
+        form.addEventListener('submit', (e) => { // отправка формы
+            e.preventDefault(); // отмена всех стандартных действий при клике на отправку формы, включая перезагрузку странницы
+            
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+            
+            const request = new XMLHttpRequest(); //это API, который предоставляет клиенту функциональность для обмена данными между клиентом и сервером. Данный API предоставляет простой способ получения данных по ссылке без перезагрузки страницы. Это позволяет обновлять только часть веб-страницы не прерывая пользователя.  XMLHttpRequest используется в AJAX запросах и особенно в single-page приложениях.
+            request.open('POST', 'server.php'); // настройка request
+
+            request.setRequestHeader('Content-type', 'multipart/form-data');
+            const formData = new FormData(form);
+
+            request.send(formData);
+
+            request.addEventListener('load', () => {
+                if (request.status === 200){
+                    console.log(request.response);
+                    statusMessage.textContent = message.success;
+                } else {
+                    statusMessage.textContent = message.failure;
+                }
+            });
+        });
+    }
 });
