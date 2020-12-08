@@ -160,13 +160,12 @@ window.addEventListener('DOMContentLoaded', function() {
         render() {
             const element = document.createElement('div');
             if (this.classes.length === 0) {
-                this.element = 'menu__item';
-                element.classList.add(this.element);
+                this.classes = "menu__item";
+                element.classList.add(this.classes);
             } else {
                 this.classes.forEach(className => element.classList.add(className));
             }
 
-            this.classes.forEach(className => element.classList.add(className));
             element.innerHTML = `
                 <img src=${this.src} alt=${this.alt}>
                 <h3 class="menu__item-subtitle">${this.title}</h3>
@@ -196,8 +195,7 @@ window.addEventListener('DOMContentLoaded', function() {
         'Меню "Постное"',
         'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
         14,
-        ".menu .container",
-        'menu__item'
+        ".menu .container"
     ).render();
 
     new MenuCard(
@@ -206,8 +204,7 @@ window.addEventListener('DOMContentLoaded', function() {
         'Меню “Премиум”',
         'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
         21,
-        ".menu .container",
-        'menu__item'
+        ".menu .container"
     ).render();
     
     //forms
@@ -226,35 +223,33 @@ window.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', (e) => { // отправка формы
             e.preventDefault(); // отмена всех стандартных действий при клике на отправку формы, включая перезагрузку странницы
             
-            let statusMessage = document.createElement('img ');
+            let statusMessage = document.createElement('img');
             statusMessage.src = message.loading;
             statusMessage.style.cssText = `
-                display:block;
-                margin:0 atpto;
+                display: block;
+                margin: 0 auto;
             `;  
-            form.appendChild(statusMessage);
+            form.insertAdjacentElement('afterend', statusMessage);
             
             const request = new XMLHttpRequest(); //это API, который предоставляет клиенту функциональность для обмена данными между клиентом и сервером. Данный API предоставляет простой способ получения данных по ссылке без перезагрузки страницы. Это позволяет обновлять только часть веб-страницы не прерывая пользователя.  XMLHttpRequest используется в AJAX запросах и особенно в single-page приложениях.
             request.open('POST', 'server.php'); // настройка request
-            request.setRequestHeader('Content-type', 'application/json');
+            request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
             const formData = new FormData(form);
 
             const object = {};
-
-            formData.forEach(function (value, key){
-                object.key = value;
+            formData.forEach(function(value, key){
+                object[key] = value;
             });
-
             const json = JSON.stringify(object);
 
             request.send(json); // послать HTTP запрос на сервер и получить ответ.
 
             request.addEventListener('load', () => {
-                if (request.status === 200){
+                if (request.status === 200) {
                     console.log(request.response);
                     showThanksModal(message.success);
-                    form.reset();
                     statusMessage.remove();
+                    form.reset();
                 } else {
                     showThanksModal(message.failure);
                 }
@@ -276,13 +271,14 @@ window.addEventListener('DOMContentLoaded', function() {
                 <div class="modal__title">${message}</div>
             </div>
         `;
-
         document.querySelector('.modal').append(thanksModal);
         setTimeout(() => {
             thanksModal.remove();
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
             closeModal();
-        }, 1000);
-    }
+        }, 4000);
+    }   
+
+    
 });
