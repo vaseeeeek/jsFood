@@ -278,7 +278,9 @@ window.addEventListener('DOMContentLoaded', function() {
             prevModalDialog.classList.remove('hide');
             closeModal();
         }, 4000);
-    }   
+    }     
 
-    
+    fetch('https://jsonplaceholder.typicode.com/todos/1') // fetch испоьзует промесы, можем использовать then(true)
+        .then(response => response.json()) // взять ответ от сервара в формате json и перевести в js обьект
+        .then(json => console.log(json));  //
 });
