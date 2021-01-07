@@ -300,13 +300,13 @@ window.addEventListener('DOMContentLoaded', function() {
         }, 4000);
     }     
 
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',  // отправление обькта JS на серер
-        body: JSON.stringify({name: 'Alex'}), // перевод JS в JSON
-        headers: {
-            'Content-type': 'application/json'
-        }
-    }) // fetch испоьзует промесы, можем использовать then(true)
-        .then(response => response.json()) // взять ответ от сервара в формате json и перевести в js обьект
-        .then(json => console.log(json));  //
+    // fetch('https://jsonplaceholder.typicode.com/posts', {
+    //     method: 'POST',  // отправление обькта JS на серер
+    //     body: JSON.stringify({name: 'Alex'}), // перевод JS в JSON
+    //     headers: {
+    //         'Content-type': 'application/json'
+    //     }
+    // }) // fetch испоьзует промесы, можем использовать then(true)
+    //     .then(response => response.json()) // взять ответ от сервара в формате json и перевести в js обьект
+    //     .then(json => console.log(json));  //
 });
