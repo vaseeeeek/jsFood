@@ -235,9 +235,11 @@ window.addEventListener('DOMContentLoaded', function() {
             `;  
             form.insertAdjacentElement('afterend', statusMessage);
             
-            const request = new XMLHttpRequest(); //это API, который предоставляет клиенту функциональность для обмена данными между клиентом и сервером. Данный API предоставляет простой способ получения данных по ссылке без перезагрузки страницы. Это позволяет обновлять только часть веб-страницы не прерывая пользователя.  XMLHttpRequest используется в AJAX запросах и особенно в single-page приложениях.
-            request.open('POST', 'server.php'); // настройка request
-            request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            //const request = new XMLHttpRequest(); //это API, который предоставляет клиенту функциональность для обмена данными между клиентом и сервером. Данный API предоставляет простой способ получения данных по ссылке без перезагрузки страницы. Это позволяет обновлять только часть веб-страницы не прерывая пользователя.  XMLHttpRequest используется в AJAX запросах и особенно в single-page приложениях.
+            //request.open('POST', 'server.php'); // настройка request
+
+
+            //request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
             const formData = new FormData(form);
 
             const object = {};
@@ -246,18 +248,36 @@ window.addEventListener('DOMContentLoaded', function() {
             });
             const json = JSON.stringify(object);
 
-            request.send(json); // послать HTTP запрос на сервер и получить ответ.
+            //request.send(json); // послать HTTP запрос на сервер и получить ответ.
 
-            request.addEventListener('load', () => {
-                if (request.status === 200) {
-                    console.log(request.response);
-                    showThanksModal(message.success);
-                    statusMessage.remove();
-                    form.reset();
-                } else {
-                    showThanksModal(message.failure);
-                }
-            });
+            fetch('server.php', {
+                method: "POST", // отправка формы
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(object)
+            }).then(data => data.text())
+            .then(data => { // если ошиби при отправке формы на сервер нет
+                console.log(data);// вывод в консоль что вернул сервер
+                showThanksModal(message.success);
+                statusMessage.remove();
+            }).catch(() => { // если ошибка при отправке формы на сервер есть
+                showThanksModal(message.failure);
+            }).finally(() => { // при любом ответе с сервера
+                form.reset();
+            })
+
+
+            // request.addEventListener('load', () => {
+            //     if (request.status === 200) {
+            //         console.log(request.response);
+            //         showThanksModal(message.success);
+            //         statusMessage.remove();
+            //         form.reset();
+            //     } else {
+            //         showThanksModal(message.failure);
+            //     }
+            // });
         });
     }
 
@@ -282,5 +302,19 @@ window.addEventListener('DOMContentLoaded', function() {
             prevModalDialog.classList.remove('hide');
             closeModal();
         }, 4000);
+<<<<<<< HEAD
     }  
+=======
+    }     
+
+    // fetch('https://jsonplaceholder.typicode.com/posts', {
+    //     method: 'POST',  // отправление обькта JS на серер
+    //     body: JSON.stringify({name: 'Alex'}), // перевод JS в JSON
+    //     headers: {
+    //         'Content-type': 'application/json'
+    //     }
+    // }) // fetch испоьзует промесы, можем использовать then(true)
+    //     .then(response => response.json()) // взять ответ от сервара в формате json и перевести в js обьект
+    //     .then(json => console.log(json));  //
+>>>>>>> 4e28ee569c5b205a05edca8438f656b85175bb4f
 });
