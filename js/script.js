@@ -214,10 +214,22 @@ window.addEventListener('DOMContentLoaded', function() {
     };
 
     forms.forEach(item => {
-        postData(item);
+        bindPostData(item);
     });
 
-    function postData(form) {
+    const postData = async () => { // присваивается для использования async
+        const res = await fetch(url, { // await означает работу кода только после ответи от сервера внутри  fetch 
+            method: "POST", // отправка формы
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: data
+        });
+
+        return await res.json(); // сделает return только после выполнения res.json()
+    };
+
+    function bindPostData(form) {
         form.addEventListener('submit', (e) => { // отправка формы
             e.preventDefault(); // отмена всех стандартных действий при клике на отправку формы, включая перезагрузку странницы
             
@@ -244,13 +256,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
             //request.send(json); // послать HTTP запрос на сервер и получить ответ.
 
-            fetch('server.php', {
-                method: "POST", // отправка формы
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(object)
-            }).then(data => data.text())
+            postData('server.php', JSON.stringify(object)).then(data => data.text())
             .then(data => { // если ошиби при отправке формы на сервер нет
                 console.log(data);// вывод в консоль что вернул сервер
                 showThanksModal(message.success);
