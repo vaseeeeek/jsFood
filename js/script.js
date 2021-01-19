@@ -95,8 +95,7 @@ window.addEventListener('DOMContentLoaded', function() {
     setClock('.timer', deadline);
 
     const modalTrigger = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        modalCloseBtn = document.querySelector('[data-close]');
+        modal = document.querySelector('.modal');
 
     modalTrigger.forEach(btn => {
         btn.addEventListener('click', openModal);
@@ -127,12 +126,7 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-<<<<<<< HEAD
-    const modalTimerId = setTimeout(openModal, 300);
-=======
-    const modalTimerId = setTimeout(openModal, 50000);
->>>>>>> 87bc6bd7a430a3e326ed6167f9db0eafe32a0b0b
-    // Изменил значение, чтобы не отвлекало
+    const modalTimerId = setTimeout(openModal, 50000); // Изменил значение, чтобы не отвлекало
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
@@ -239,14 +233,14 @@ window.addEventListener('DOMContentLoaded', function() {
             //request.open('POST', 'server.php'); // настройка request
 
 
-            //request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-            const formData = new FormData(form);
+            //request.setRequestHeader('Content-type', 'application/json; charset=utf-8'); // Настройка загаловка (описание того что будетприходить) //!!! при использовании formData в сочитании с XMLHttpRequest УСТАНАВЛИВАТЬ НЕ НУЖНО (ПРОИСХОДИТ АВТОМАТИЧЕСКИ) 
+            const formData = new FormData(form); // FormData  формирует данные которые заполнил пользователь ключ=>значение, !!! Обязательным условиях что в Input должен быть name
 
             const object = {};
             formData.forEach(function(value, key){
                 object[key] = value;
             });
-            const json = JSON.stringify(object);
+            // const json = JSON.stringify(object);
 
             //request.send(json); // послать HTTP запрос на сервер и получить ответ.
 
@@ -265,7 +259,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 showThanksModal(message.failure);
             }).finally(() => { // при любом ответе с сервера
                 form.reset();
-            })
+            });
 
 
             // request.addEventListener('load', () => {
@@ -302,11 +296,13 @@ window.addEventListener('DOMContentLoaded', function() {
             prevModalDialog.classList.remove('hide');
             closeModal();
         }, 4000);
-<<<<<<< HEAD
-    }  
-=======
-    }     
+    }
 
+    fetch('http://localhost:3000/menu')
+        .then(data => data.json()) // взять ответ от сервера и превратить оычный js обьект 
+        .then(res => console.log(res));  // взять результат и вывести его в консоль 
+});
+ 
     // fetch('https://jsonplaceholder.typicode.com/posts', {
     //     method: 'POST',  // отправление обькта JS на серер
     //     body: JSON.stringify({name: 'Alex'}), // перевод JS в JSON
@@ -316,5 +312,3 @@ window.addEventListener('DOMContentLoaded', function() {
     // }) // fetch испоьзует промесы, можем использовать then(true)
     //     .then(response => response.json()) // взять ответ от сервара в формате json и перевести в js обьект
     //     .then(json => console.log(json));  //
->>>>>>> 4e28ee569c5b205a05edca8438f656b85175bb4f
-});
