@@ -178,6 +178,14 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    const getResource = async (url) => { // присваивается для использования async
+        const res = await fetch(url);
+        
+        if (!)
+
+        return await res.json(); //await сделает return только после выполнения res.json()
+    };
+
     new MenuCard(
         "img/tabs/vegy.jpg",
         "vegy",
@@ -217,7 +225,7 @@ window.addEventListener('DOMContentLoaded', function() {
         bindPostData(item);
     });
 
-    const postData = async () => { // присваивается для использования async
+    const postData = async (url, data) => { // присваивается для использования async
         const res = await fetch(url, { // await означает работу кода только после ответи от сервера внутри  fetch 
             method: "POST", // отправка формы
             headers: {
@@ -226,7 +234,7 @@ window.addEventListener('DOMContentLoaded', function() {
             body: data
         });
 
-        return await res.json(); // сделает return только после выполнения res.json()
+        return await res.json(); //await сделает return только после выполнения res.json()
     };
 
     function bindPostData(form) {
@@ -248,15 +256,14 @@ window.addEventListener('DOMContentLoaded', function() {
             //request.setRequestHeader('Content-type', 'application/json; charset=utf-8'); // Настройка загаловка (описание того что будетприходить) //!!! при использовании formData в сочитании с XMLHttpRequest УСТАНАВЛИВАТЬ НЕ НУЖНО (ПРОИСХОДИТ АВТОМАТИЧЕСКИ) 
             const formData = new FormData(form); // FormData  формирует данные которые заполнил пользователь ключ=>значение, !!! Обязательным условиях что в Input должен быть name
 
-            const object = {};
-            formData.forEach(function(value, key){
-                object[key] = value;
-            });
+            const json = JSON.stringify(Object.fromEntries(formData.entries())); // formData.entries превращает оьект в массив массивов, Object.fromEntries превращает ее в классический обьект, json.string превращает в json обьект
+
+
             // const json = JSON.stringify(object);
 
             //request.send(json); // послать HTTP запрос на сервер и получить ответ.
 
-            postData('server.php', JSON.stringify(object)).then(data => data.text())
+            postData('http://localhost:3000/requests', json)
             .then(data => { // если ошиби при отправке формы на сервер нет
                 console.log(data);// вывод в консоль что вернул сервер
                 showThanksModal(message.success);
