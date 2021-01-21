@@ -181,7 +181,9 @@ window.addEventListener('DOMContentLoaded', function() {
     const getResource = async (url) => { // присваивается для использования async
         const res = await fetch(url);
         
-        if (!)
+        if (!res.ok) {
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);  // обьект ошибки
+        }
 
         return await res.json(); //await сделает return только после выполнения res.json()
     };
