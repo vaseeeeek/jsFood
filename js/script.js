@@ -188,6 +188,11 @@ window.addEventListener('DOMContentLoaded', function() {
         return await res.json(); //await сделает return только после выполнения res.json()
     };
 
+    getResource('http://localhost:3000/menu')
+        .then(data => {
+            data.forEach
+        });
+
     new MenuCard(
         "img/tabs/vegy.jpg",
         "vegy",
